@@ -12,19 +12,34 @@ for (let i = 0; i < coll.length; i++) {
     });
 }
 
-// Initialize the signature count
-let signatureCount = localStorage.getItem('signatureCount') ? parseInt(localStorage.getItem('signatureCount')) : 0;
-document.getElementById('signature-count').innerText = signatureCount;
+// Function to initialize the signature count from local storage
+function initializeSignatureCount() {
+    // Get the count from local storage, or default to 0 if not found
+    let count = localStorage.getItem('signatureCount') || 0;
+    document.getElementById('signature-count').innerText = count;
+}
 
-// Handle form submission
+// Function to handle form submission
 document.getElementById('petition-form').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission
 
     // Increment the signature count
-    signatureCount++;
-    localStorage.setItem('signatureCount', signatureCount); // Store the updated count in localStorage
-    document.getElementById('signature-count').innerText = signatureCount; // Update the displayed count
+    let countElement = document.getElementById('signature-count');
+    let currentCount = parseInt(countElement.innerText);
+    currentCount += 1;
 
-    // Optionally, you can reset the form after submission
+    // Update the displayed count
+    countElement.innerText = currentCount;
+
+    // Store the updated count in local storage
+    localStorage.setItem('signatureCount', currentCount);
+
+    // Clear the form fields
     this.reset();
+    
+    // Optionally, display a success message
+    alert('Thank you for signing the petition!');
 });
+
+// Initialize the signature count when the page loads
+window.onload = initializeSignatureCount;
